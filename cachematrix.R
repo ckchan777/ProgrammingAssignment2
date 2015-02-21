@@ -2,6 +2,7 @@
 ## functions do
 
 ## Write a short comment describing this function
+##this funtion stores  a cached version in variable m using setinversematrix function using the <<- operator
 
 makeCacheMatrix <- function(x = matrix()) {
 
@@ -14,7 +15,7 @@ makeCacheMatrix <- function(x = matrix()) {
     }
     get<-function() x
     
-    ##solve returns the inverse of the matrix argument
+    ##solve returns the inverse of the matrix argument, as per assignment instructions
     setinversematrix<-function(m) 
     {
       solve(m)
@@ -26,26 +27,30 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ## Write a short comment describing this function
+## cacheSolve will do he following:
+##If the inverse has already been calculated (and the matrix has not changed) (using identical keyword to check), 
+##cachesolve should retrieve the inverse from the cache
+##if m is NOT null (implies cached data exists) AND the two matrices are the same (using the identical keyword), return cached version
+
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    
+    ##try to get m, cached version, if available
     m<-x$getinversematrix()
     
-    ##if m is NOT null, implies cached data exists and thus returns that data
-    if(!is.null(m)) ##AND must also check the SAME matrix is store in m
+    if(!is.null(m) && identical(x,m) ) ##cache exists and matrices are identical, return that cached version
     {
       message("getting cached data")
       return(m)
     }
     
-    ##if m is null, this block will be executed, no cache data available
+    ##if m is null OR matrices NOT the same, execute this block since no cache data available or matrix is different
     ##thus must calculate a new inverse matrix 
     data<-x$get() ##data stores the user input matrix 
     
     ##assigns variable m with the inverse of the matrix
     ##after this is executed, if(!is.null(m)) will be TRUE and there will be a cached copy of the matrix
-    m<-store(data)
-    x$setinversematrix(m)
-    m
-    
+    m<-solve(data)
+    x$setinversematrix(m)##cache this matrix for future use 
+    m    
 }
